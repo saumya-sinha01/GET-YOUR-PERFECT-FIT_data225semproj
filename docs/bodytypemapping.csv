@@ -1,0 +1,8 @@
+﻿ratiosid,bodytype,bust-hips_min,bust-hips_max,hips-bust_min,hips-bust_max,bust-waist_min,bust-waist_max,hips-waist,high hip/waist
+1,hourglass,,1,,3.6,9,,10,
+2,bottom hourglass,,,3.6,10,,,9,1.193
+3,Top hourglass,1,10,,,9,,,
+4,Triangle,,,2,,,,7,1.193
+5,Inverted Triangle,3.6,,,,,9,,
+6,Rectangle,,3.6,,3.6,,9,10,
+7,Round,,,3.6,,,,9,
