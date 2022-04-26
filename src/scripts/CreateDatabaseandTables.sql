@@ -42,32 +42,33 @@ CREATE TABLE IF NOT EXISTS `projectdata225`.`product_type` (
 COMMENT = 'product type for categorization of product';
 
 
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(1,1,'Vest top','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(2,4,'Leggings/Tights','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(3,1,'Sweater','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(4,1,'Top','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(5,4,'Trousers','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(6,12,'Bodysuit','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(7,1,'Hoodie','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(8,4,'Skirt','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(9,1,'T-shirt','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(10,12,'Dress','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(11,4,'Shorts','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(12,1,'Shirt','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(13,1,'Cardigan','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(14,1,'Blazer','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(15,12,'Jumpsuit/Playsuit','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(16,1,'Jacket','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(17,12,'Costumes','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(18,1,'Coat','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(19,1,'Polo shirt','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(20,1,'Tailored Waistcoat','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(21,1,'Blouse','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(22,12,'Outdoor overall','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(23,12,'Dungarees','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(24,4,'Outdoor trousers','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(25,12,'Garment Set','Y');
-insert into product_type (product_type_id, product_group_id,type_name,is_active) values(26,1,'Outdoor Waistcoat','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(253,1,'Vest top','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(273,4,'Leggings/Tights','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(252,1,'Sweater','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(254,1,'Top','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(272,4,'Trousers','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(256,12,'Bodysuit','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(308,1,'Hoodie','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(275,4,'Skirt','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(255,1,'T-shirt','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(265,12,'Dress','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(274,4,'Shorts','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(259,1,'Shirt','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(245,1,'Cardigan','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(264,1,'Blazer','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(267,12,'Jumpsuit/Playsuit','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(262,1,'Jacket','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(277,12,'Costumes','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(263,1,'Coat','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(257,1,'Polo shirt','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(260,1,'Tailored Waistcoat','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(258,1,'Blouse','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(271,12,'Outdoor overall','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(268,12,'Dungarees','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(276,4,'Outdoor trousers','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(270,12,'Garment Set','Y');
+insert into product_type (product_type_id, product_group_id,type_name,is_active) values(261,1,'Outdoor Waistcoat','Y');
+
 
 
 
@@ -222,6 +223,7 @@ insert into body_type(body_type_id, body_type_name, type_code) values(7,'rectang
 CREATE TABLE `body_style_map` (
   `product_style_id` int DEFAULT NULL,
   `body_type_id` int DEFAULT NULL,
+  PRIMARY KEY (`product_style_id`,`body_type_id`),
   UNIQUE KEY `UQ_INDX_TYPE_STYLE_ID` (`product_style_id`,`body_type_id`) /*!80000 INVISIBLE */,
   KEY `FK_BTM_BODY_TYPE_ID_idx` (`body_type_id`),
   KEY `FK_BTM_PRODUCT_STYLE_ID_idx` (`product_style_id`),
@@ -571,6 +573,132 @@ insert into body_style_map(product_style_id , body_type_id) values(115,7);
 
 
 
+CREATE TABLE `projectdata225`.`product_color` (
+  `product_color_id` INT NOT NULL AUTO_INCREMENT,
+  `color_name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`product_color_id`))
+COMMENT = 'Color of product';
+
+insert into product_color (product_color_id , color_name) values(1,'Other');
+insert into product_color (product_color_id , color_name) values(2,'Transparent');
+insert into product_color (product_color_id , color_name) values(3,'Silver');
+insert into product_color (product_color_id , color_name) values(4,'Bronze/Copper');
+insert into product_color (product_color_id , color_name) values(5,'Gold');
+insert into product_color (product_color_id , color_name) values(6,'Light Grey');
+insert into product_color (product_color_id , color_name) values(7,'Grey');
+insert into product_color (product_color_id , color_name) values(8,'Dark Grey');
+insert into product_color (product_color_id , color_name) values(9,'Black');
+insert into product_color (product_color_id , color_name) values(10,'White');
+insert into product_color (product_color_id , color_name) values(11,'Off White');
+insert into product_color (product_color_id , color_name) values(12,'Light Beige');
+insert into product_color (product_color_id , color_name) values(13,'Beige');
+insert into product_color (product_color_id , color_name) values(14,'Dark Beige');
+insert into product_color (product_color_id , color_name) values(15,'Greyish Beige');
+insert into product_color (product_color_id , color_name) values(17,'Yellowish Brown');
+insert into product_color (product_color_id , color_name) values(19,'Greenish Khaki');
+insert into product_color (product_color_id , color_name) values(20,'Other Yellow');
+insert into product_color (product_color_id , color_name) values(21,'Light Yellow');
+insert into product_color (product_color_id , color_name) values(22,'Yellow');
+insert into product_color (product_color_id , color_name) values(23,'Dark Yellow');
+insert into product_color (product_color_id , color_name) values(30,'Other Orange');
+insert into product_color (product_color_id , color_name) values(31,'Light Orange');
+insert into product_color (product_color_id , color_name) values(32,'Orange');
+insert into product_color (product_color_id , color_name) values(33,'Dark Orange');
+insert into product_color (product_color_id , color_name) values(40,'Other Red');
+insert into product_color (product_color_id , color_name) values(41,'Light Red');
+insert into product_color (product_color_id , color_name) values(42,'Red');
+insert into product_color (product_color_id , color_name) values(43,'Dark Red');
+insert into product_color (product_color_id , color_name) values(50,'Other Pink');
+insert into product_color (product_color_id , color_name) values(51,'Light Pink');
+insert into product_color (product_color_id , color_name) values(52,'Pink');
+insert into product_color (product_color_id , color_name) values(53,'Dark Pink');
+insert into product_color (product_color_id , color_name) values(60,'Other Purple');
+insert into product_color (product_color_id , color_name) values(61,'Light Purple');
+insert into product_color (product_color_id , color_name) values(62,'Purple');
+insert into product_color (product_color_id , color_name) values(63,'Dark Purple');
+insert into product_color (product_color_id , color_name) values(70,'Other Blue');
+insert into product_color (product_color_id , color_name) values(71,'Light Blue');
+insert into product_color (product_color_id , color_name) values(72,'Blue');
+insert into product_color (product_color_id , color_name) values(73,'Dark Blue');
+insert into product_color (product_color_id , color_name) values(80,'Other Turquoise');
+insert into product_color (product_color_id , color_name) values(81,'Light Turquoise');
+insert into product_color (product_color_id , color_name) values(82,'Turquoise');
+insert into product_color (product_color_id , color_name) values(83,'Dark Turquoise');
+insert into product_color (product_color_id , color_name) values(90,'Other Green');
+insert into product_color (product_color_id , color_name) values(91,'Light Green');
+insert into product_color (product_color_id , color_name) values(92,'Green');
+insert into product_color (product_color_id , color_name) values(93,'Dark Green');
+insert into product_color (product_color_id , color_name) values(-1,'Unknown');
 
 
+CREATE TABLE `product` (
+  `product_code` int NOT NULL,
+  `product_type_id` int NOT NULL,
+  `prod_name` varchar(45) DEFAULT NULL,
+  `detail_desc` varchar(2500) DEFAULT NULL,
+  PRIMARY KEY (`product_code`),
+  KEY `product_type_id_idx` (`product_type_id`),
+  CONSTRAINT `product_type_id` FOREIGN KEY (`product_type_id`) REFERENCES `product_type` (`product_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Product '
 
+
+CREATE TABLE `projectdata225`.`product_color_map` (
+  `article_id` INT NOT NULL AUTO_INCREMENT,
+  `product_code` INT NOT NULL,
+  `product_color_id` INT NOT NULL,
+  PRIMARY KEY (`article_id`),
+  INDEX `FK_PCM_PRODUCT_ID_idx` (`product_code` ASC) VISIBLE,
+  INDEX `FK_PCM_PRODUCT_COLOR_ID_idx` (`product_color_id` ASC) VISIBLE,
+  CONSTRAINT `FK_PCM_PRODUCT_ID`
+    FOREIGN KEY (`product_code`)
+    REFERENCES `projectdata225`.`product` (`product_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PCM_PRODUCT_COLOR_ID`
+    FOREIGN KEY (`product_color_id`)
+    REFERENCES `projectdata225`.`product_color` (`product_color_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+COMMENT = 'Mapping of product and color';
+
+
+CREATE TABLE `projectdata225`.`product_style_map` (
+  `product_style_id` INT NOT NULL,
+  `product_code` INT NOT NULL,
+  PRIMARY KEY (`product_style_id`, `product_code`),
+  INDEX `FK_PSM_PRODUCT_CODE_idx` (`product_code` ASC) VISIBLE,
+  CONSTRAINT `FK_PSM_PRODUCT_STYLE_ID`
+    FOREIGN KEY (`product_style_id`)
+    REFERENCES `projectdata225`.`product_style` (`product_style_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PSM_PRODUCT_CODE`
+    FOREIGN KEY (`product_code`)
+    REFERENCES `projectdata225`.`product` (`product_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+    CREATE TABLE `projectdata225`.`customer_transaction` (
+  `t_dat` DATE NULL,
+  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `article_id` INT NULL,
+  `price` DECIMAL NULL,
+  PRIMARY KEY (`customer_id`));
+
+  CREATE TABLE `projectdata225`.`customer` (
+  `customer_id` INT NOT NULL,
+  `body_type_id` INT NULL,
+  `gender` INT NULL,
+  `age` INT NULL,
+  `bust` FLOAT NULL,
+  `highhip` FLOAT NULL,
+  `waist` FLOAT NULL,
+  `hip` FLOAT NULL,
+  `bodytype` VARCHAR(50) NULL,
+  PRIMARY KEY (`customer_id`),
+  INDEX `FK_CBT_BODY_TYPE_ID_idx` (`body_type_id` ASC) VISIBLE,
+  CONSTRAINT `FK_CBT_BODY_TYPE_ID`
+    FOREIGN KEY (`body_type_id`)
+    REFERENCES `projectdata225`.`body_type` (`body_type_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
