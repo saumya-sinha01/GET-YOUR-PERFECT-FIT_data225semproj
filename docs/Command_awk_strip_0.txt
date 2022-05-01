@@ -1,0 +1,1 @@
+find . -name "*.jpg" | awk '{print("cp " $1 " ./"substr($1,23))} ' > copyscript.sh

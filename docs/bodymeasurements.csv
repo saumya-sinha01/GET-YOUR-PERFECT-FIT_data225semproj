@@ -1,4 +1,4 @@
-custid,Gender,Age,HeadCircumference,ShoulderWidth,ChestWidth ,Belly ,Waist ,Hips ,ArmLength ,ShoulderToWaist ,WaistToKnee ,LegLength,TotalHeight
+Customer_id,Gender,Age,HeadCircumference,ShoulderWidth,ChestWidth ,Belly ,Waist ,Hips ,ArmLength ,ShoulderToWaist ,WaistToKnee ,LegLength,TotalHeight
 1,1,30,22,18,20,18,14,22,22,25,25,22,52
 2,1,28,19,22,17,18,21,25,28,23,25,20,56
 3,2,27,21,18,16,14,10,15,21,18,14,18,53

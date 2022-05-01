@@ -680,10 +680,9 @@ CREATE TABLE `projectdata225`.`product_style_map` (
 
     CREATE TABLE `projectdata225`.`customer_transaction` (
   `t_dat` DATE NULL,
-  `customer_id` INT NOT NULL AUTO_INCREMENT,
+  `customer_id` VARCHAR(250) NULL,
   `article_id` INT NULL,
-  `price` DECIMAL NULL,
-  PRIMARY KEY (`customer_id`));
+  `price` DECIMAL NULL);
 
   CREATE TABLE `projectdata225`.`customer` (
   `customer_id` INT NOT NULL,
@@ -700,5 +699,31 @@ CREATE TABLE `projectdata225`.`product_style_map` (
   CONSTRAINT `FK_CBT_BODY_TYPE_ID`
     FOREIGN KEY (`body_type_id`)
     REFERENCES `projectdata225`.`body_type` (`body_type_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+    ALTER TABLE `projectdata225`.`customer` 
+    ADD COLUMN `skin_condition_level` INT NULL DEFAULT 3 AFTER `bodytype`;
+
+    CREATE TABLE `projectdata225`.`fabric` (
+  `fabric_id` INT NOT NULL,
+  `fabric_name` VARCHAR(200) NULL,
+  `level` INT NULL,
+  `fabric_desc` VARCHAR(500) NULL,
+  PRIMARY KEY (`fabric_id`));
+
+  CREATE TABLE `projectdata225`.`product_fabric_map` (
+  `product_code` INT NOT NULL,
+  `fabric_id` INT NOT NULL,
+  PRIMARY KEY (`product_code`, `fabric_id`),
+  INDEX `fabric_id_idx` (`fabric_id` ASC) VISIBLE,
+  CONSTRAINT `product_code`
+    FOREIGN KEY (`product_code`)
+    REFERENCES `projectdata225`.`product` (`product_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fabric_id`
+    FOREIGN KEY (`fabric_id`)
+    REFERENCES `projectdata225`.`fabric` (`fabric_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
