@@ -232,7 +232,7 @@ def importCustProfileCSV():
     print(df)
 
     df.head()
-    df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType_mongo.csv')
+    df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType_mongo.csv',header=['customer_id','gender','age','bust','belly','waist','highhip','bodytype','body_type_id','skin_condition_level'])
     #print(df)    
     
 def cleanArticleTable():
@@ -260,8 +260,8 @@ def cleanArticleTable():
     df.drop(df.loc[df['5'] == 'Stationery'].index,inplace=True)
                   
     #df.drop(indexNames , inplace=True)
-    
-    df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')
+     
+    df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv',header=['unnamed','article_id','product_code','product_name','product_type_id','product_type_name','prod_group_name','product_color_id','color_name','detail_desc'])
 
 def checkColorValues():
     df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
@@ -269,7 +269,7 @@ def checkColorValues():
     print(df.head)
     print(df['9'].unique())
     new_df = df[['8','9']].copy()
-    new_df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/colorType.csv')
+    new_df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/colorType.csv',header=['product_color_id','color_name'])
 
 
 def getConnection():
@@ -302,40 +302,58 @@ inserted_product_style_map=[()]
 inserted_product_fabric_map=[()]
 
 def insertProduct(connection , productInfo):
-    # for index, row in productInfo.iterrows():
-    #     if row['1'] not in inserted_product_code :
-    #         datarow=[row['1'] , row['3'] , row['2'] , row['24']]
-    #         print("Inserting product " , str(datarow))
-    #         with connection.cursor() as cursor:
-    #             cursor.execute('INSERT INTO product(product_code, product_type_id, prod_name, detail_desc)' 'VALUES(%s, %s, %s, %s)', datarow)
-    #             connection.commit()
-    #         inserted_product_code.append(row['1'])
-    #     insertProductColor(connection , row['0'] , row['1'] , row['8'])
+    checkcountquery = '''select count(*) from product'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print("inside product", result[0])
+        if(result[0] == 0):
+            for index, row in productInfo.iterrows():
+                if row['1'] not in inserted_product_code :
+                    datarow=[row['1'] , row['3'] , row['2'] , row['24']]
+                    print("Inserting product " , str(datarow))
+                    with connection.cursor() as cursor:
+                        cursor.execute('INSERT INTO product(product_code, product_type_id, prod_name, detail_desc)' 'VALUES(%s, %s, %s, %s)', datarow)
+                        connection.commit()
+                    inserted_product_code.append(row['1'])
+                insertProductColor(connection , row['0'] , row['1'] , row['8'])
     return 0
 
 
 def insertProductColor(connection , articleid , productId , colorId):
-    # if articleid not in inserted_article :
-    #     datarow=[articleid , productId , colorId ]
-    #     print("Inserting product article with new color" , str(datarow))
-    #     with connection.cursor() as cursor:
-    #         cursor.execute('INSERT INTO product_color_map(article_id , product_code, product_color_id)' 'VALUES(%s, %s, %s)', datarow)
-    #         connection.commit()
-    #     inserted_article.append(articleid)
+    checkcountquery = '''select count(*) from product_color_map'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print('inside product_color_map',result[0])
+        if(result[0] == 0):
+            if articleid not in inserted_article :
+                datarow=[articleid , productId , colorId ]
+                print("Inserting product article with new color" , str(datarow))
+                with connection.cursor() as cursor:
+                    cursor.execute('INSERT INTO product_color_map(article_id , product_code, product_color_id)' 'VALUES(%s, %s, %s)', datarow)
+                    connection.commit()
+                inserted_article.append(articleid)
     return 0
 
 
 def insertProductStyleMap(connection, productInfo , stypeInfo):
-    #print("Inside Product Style    ", stypeInfo[0],stypeInfo[1], productInfo['1'],productInfo.shape)
-    for index, row in productInfo.iterrows():
-        if (stypeInfo[1],row['1']) not in inserted_product_style_map:
-            datarow=[stypeInfo[1],row['1']]
-            print("Inserting product style map" , str(datarow))
-            print("aaaaa",stypeInfo[1],row['1'])
-            with connection.cursor() as cursor:
-                cursor.execute('INSERT INTO product_style_map(product_style_id, product_code)' 'VALUES(%s, %s)', datarow)
-                connection.commit()
-            inserted_product_style_map.append((stypeInfo[1],row['1']))
+    checkcountquery = '''select count(*) from product_style_map'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print('inside product_style_map',result[0])
+        if(result[0] == 0):
+            #print("Inside Product Style    ", stypeInfo[0],stypeInfo[1], productInfo['1'],productInfo.shape)
+            for index, row in productInfo.iterrows():
+                if (stypeInfo[1],row['1']) not in inserted_product_style_map:
+                    datarow=[stypeInfo[1],row['1']]
+                    #print("Inserting product style map" , str(datarow))
+                    #print("product_style_id,product_code",stypeInfo[1],row['1'])
+                    with connection.cursor() as cursor:
+                        cursor.execute('INSERT INTO product_style_map(product_style_id, product_code)' 'VALUES(%s, %s)', datarow)
+                        connection.commit()
+                    inserted_product_style_map.append((stypeInfo[1],row['1']))
     return 0
 
 
@@ -354,14 +372,14 @@ def findStyles(connection):
         df = df.replace({np.nan: None})
         for c in df.columns:
             count = df[c].isnull().sum()
-            print(f'Col {c} has {count} missing values')
-        print(f'Done checking for missings')
-        #insertProduct(connection , df)  
-        print("Finding styles in articles:")
+            #print(f'Col {c} has {count} missing values')
+        #print('Done checking for missings')
+        insertProduct(connection , df)  
+        #print("Finding styles in articles:")
         for row in result:
             style = row[0]
             df_new = df[df['24'].str.contains(style, regex=True, na=False)]
-            print("Searching for Style : " + style)
+            #print("Searching for Style : " + style)
             if df_new.empty == False :
                 #print(df_new)
                 insertProductStyleMap(connection , df_new , row)  
@@ -373,59 +391,75 @@ def findStyles(connection):
         #print("xxxxxx: ", df_1)
 
 
-def loadCustomerTransactionDump(connection):
-    df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/transactions_train.csv',skiprows=1,header=None,usecols=[0,1,2,3])
-    #df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/transaction_train_wo_saleschannel.csv')
-    #df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/transaction_train_wo_saleschannel.csv',skiprows=1,header=None)
-    print(df.head)
-    for row in df.itertuples():
-    #     print("row..",row[0],row[1],row[2],row[3])
-        datarow=[row[1] , row[2] , row[3] , row[4]]
-        print("datarow:",datarow)
-        with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO customer_transaction(t_dat,customer_id,article_id,price)' 'VALUES(%s, %s, %s,%s)', datarow)
-            connection.commit()
+#def loadCustomerTransactionDump(connection):
+    # df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/transactions_train.csv',skiprows=1,header=None,usecols=[0,1,2,3])
+    # #df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/transaction_train_wo_saleschannel.csv')
+    # #df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/transaction_train_wo_saleschannel.csv',skiprows=1,header=None)
+    # print(df.head)
+    # for row in df.itertuples():
+    # #     print("row..",row[0],row[1],row[2],row[3])
+    #     datarow=[row[1] , row[2] , row[3] , row[4]]
+    #     print("datarow:",datarow)
+    #     with connection.cursor() as cursor:
+    #         cursor.execute('INSERT INTO customer_transaction(t_dat,customer_id,article_id,price)' 'VALUES(%s, %s, %s,%s)', datarow)
+    #         connection.commit()
 
 
 
 def insertCustomer(connection):
-    
-    df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType.csv',skiprows=1,header=None)
-    print(df)
-    df = df.replace({np.nan: None})
-    for row in df.itertuples():
-        print("row..",row[2],row[3])
-        datarow=[row[2] , row[3] , row[4] , row[5],row[6] , row[7] , row[8] , row[9],row[10],row[11]]
-        print("datarow:",datarow)
-        with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO customer(customer_id,gender,age,bust,highhip,waist,hip,bodytype,body_type_id,skin_condition_level)' 'VALUES(%s, %s, %s,%s,%s,%s,%s,%s,%s,%s)', datarow)
-            connection.commit()
+    checkcountquery = '''select count(*) from customer'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print('inside customer',result[0])
+        if(result[0] == 0):
+            df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType.csv',skiprows=1,header=None)
+            print(df)
+            df = df.replace({np.nan: None})
+            for row in df.itertuples():
+                print("row..",row[2],row[3])
+                datarow=[row[2] , row[3] , row[4] , row[5],row[6] , row[7] , row[8] , row[9],row[10],row[11]]
+                print("datarow:",datarow)
+                with connection.cursor() as cursor:
+                    cursor.execute('INSERT INTO customer(customer_id,gender,age,bust,highhip,waist,hip,bodytype,body_type_id,skin_condition_level)' 'VALUES(%s, %s, %s,%s,%s,%s,%s,%s,%s,%s)', datarow)
+                    connection.commit()
 
 def insertFabric(connection):
-    
-    df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/fabrics_names.csv',skiprows=1,header=None)
-    print(df)
-    df = df.replace({np.nan: None})
-    for row in df.itertuples():
-        print("row..",row[1],row[2])
-        datarow=[row[1] , row[2] , row[3] , row[4]]
-        print("datarow:",datarow)
-        with connection.cursor() as cursor:
-             cursor.execute('INSERT INTO fabric(fabric_id,fabric_name,level,fabric_desc)' 'VALUES(%s, %s, %s,%s)', datarow)
-             connection.commit()
+    checkcountquery = '''select count(*) from fabric'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print('inside fabric',result[0])
+        if(result[0] == 0):
+            df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/fabrics_names.csv',skiprows=1,header=None)
+            print(df)
+            df = df.replace({np.nan: None})
+            for row in df.itertuples():
+                print("row..",row[1],row[2])
+                datarow=[row[1] , row[2] , row[3] , row[4]]
+                print("datarow:",datarow)
+                with connection.cursor() as cursor:
+                    cursor.execute('INSERT INTO fabric(fabric_id,fabric_name,level,fabric_desc)' 'VALUES(%s, %s, %s,%s)', datarow)
+                    connection.commit()
 
 
 def insertProductFabricMap(connection, productInfo , fabricInfo):
-    #print("Inside fabric Style    ", fabricInfo[0],fabricInfo[1], productInfo['1'],productInfo.shape)
-    for index, row in productInfo.iterrows():
-        if (row['1'],fabricInfo[0]) not in inserted_product_fabric_map:
-            datarow=[row['1'],fabricInfo[0]]
-            print("Inserting product fabric map" , str(datarow))
-            print("aaaaa",row['1'],fabricInfo[0])
-            with connection.cursor() as cursor:
-                cursor.execute('INSERT INTO product_fabric_map(product_code,fabric_id)' 'VALUES(%s, %s)', datarow)
-                connection.commit()
-            inserted_product_fabric_map.append((row['1'],fabricInfo[0]))
+    checkcountquery = '''select count(*) from product_fabric_map'''
+    with connection.cursor() as cursor:
+        cursor.execute(checkcountquery)
+        result = cursor.fetchone()
+        print('inside product_fabric_map',result[0])
+        if(result[0] == 0):
+            #print("Inside fabric Style    ", fabricInfo[0],fabricInfo[1], productInfo['1'],productInfo.shape)
+            for index, row in productInfo.iterrows():
+                if (row['1'],fabricInfo[0]) not in inserted_product_fabric_map:
+                    datarow=[row['1'],fabricInfo[0]]
+                    print("Inserting product fabric map" , str(datarow))
+                    print("product_code,fabric_id",row['1'],fabricInfo[0])
+                    with connection.cursor() as cursor:
+                        cursor.execute('INSERT INTO product_fabric_map(product_code,fabric_id)' 'VALUES(%s, %s)', datarow)
+                        connection.commit()
+                    inserted_product_fabric_map.append((row['1'],fabricInfo[0]))
     return 0
 
 def checkProductfabric(connection):
@@ -436,12 +470,13 @@ def checkProductfabric(connection):
         cursor.execute(queryfabric)
         result = cursor.fetchall()
         df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')
-        df_1 = []
+        #df_1 = []
         df = df.replace({np.nan: None})
+        print("df........",df)
         for c in df.columns:
             count = df[c].isnull().sum()
             print(f'Col {c} has {count} missing values')
-        print(f'Done checking for missings')
+        print('Done checking for missings')
         print("Finding fabrics in articles:")
         for row in result:
             fabric = row[1]
@@ -451,11 +486,9 @@ def checkProductfabric(connection):
             if df_fabric.empty == False :
                   print(df_fabric)
                   insertProductFabricMap(connection , df_fabric , row)  
-                  df_1.append(df_fabric)
+                  #df_1.append(df_fabric)
                 
-            
-
-        
+      
         #print("xxxxxx: ", df_1)
 
 
@@ -492,13 +525,13 @@ def findTheBestFit(connection,product_type,bodytype,skin_condition_level):
 def showimages(imageId):
     
     
-    # code for displaying multiple images in one figure
-    # create figure
+    # initialize figure
     fig = plt.figure(figsize=(10, 7))
     
     # setting values to rows and column variables
     rows = 1
     columns = 1
+    #imagepath is the folder where all the images are kept and named as article_id.jpg
     imagepath="C:/Users/bhati/Documents/DB 225/DBSemProject/images/{}.jpg".format(imageId)
     print("displaying Image id :" , imagepath)
     file_exists = exists(imagepath)
@@ -506,15 +539,16 @@ def showimages(imageId):
         # reading images
         Image1 = cv2.imread(imagepath)
     
-        print("aaa")
-        # Adds a subplot at the 1st position
+        print("reading image")
+        # Adds a subplot at the position
         fig.add_subplot(rows, columns, 1)
     
-        # showing image
+        # display image located at the image path
         plt.imshow(Image1)
         plt.axis('off')
-        plt.title("First")
+        plt.title("Product suggestion")
     else :
+        # else display the message that it does not exist.
         print("Picture for the item does not exist " , imagepath)
         
 
@@ -529,24 +563,29 @@ def getCustomerBodyType(connection,customer_id):
 
 
 try:
-    #convertCSVtoJSON()
-    #loadJSONtoMongoDB()
-    #loadBodyMapFromMongo()
+    convertCSVtoJSON()
+    loadJSONtoMongoDB()
+    
+    cleanArticleTable()
+    checkColorValues()
     importCustProfileCSV()
-    #cleanArticleTable()
-    #checkColorValues()
-    # connection = getConnection()
-    #findStyles(connection)
-    #loadCustomerTransactionDump(connection) #don't use this
-    #insertCustomer(connection)
-    #insertFabric(connection)
-    #checkProductfabric(connection)
-    # customer_id = input("Enter your customer id :")
-    # product_type = input("Enter the product you are looking for : ")
-    # skin_condition_level = input("Enter if you have any skin condition: 1-severe,2-mild,3-noIssues :")
-    # custBodyType = getCustomerBodyType(connection,customer_id)
-    # print("Your bodytype is : ", custBodyType)
-    # findTheBestFit(connection,product_type,custBodyType,skin_condition_level)
+    
+    connection = getConnection()
+    findStyles(connection)
+    #loadCustomerTransactionDump(connection) #don't use this 
+    insertCustomer(connection)
+    insertFabric(connection)
+    checkProductfabric(connection)
+    customer_id = input("Enter your customer id :")
+    product_type = input("Enter the product you are looking for : ")
+    skin_condition_level = input("Enter if you have any skin condition: 1-severe,2-mild,3-noIssues :")
+    custBodyType = getCustomerBodyType(connection,customer_id)
+       
+    #custBodyType = 'rectangle'
+    #product_type = 'Hoodie'
+    #skin_condition_level = 3
+    findTheBestFit(connection,product_type,custBodyType,skin_condition_level)
+    print(f'The above recommendations are for your bodytype = {custBodyType} for {product_type}')
     
 
 except Exception as exception:
