@@ -22,12 +22,10 @@ from matplotlib import pyplot as plt
 from os.path import exists
  
 
-
 urlDocker="mongodb://localhost:49153/ProjectData225" # docker Instance
  
-# Function to convert a CSV to JSON
-# Takes the file paths as arguments
-def make_json(csvFilePath, jsonFilePath):
+# Function that converts CSV file to JSON file 
+def createjson(csvFilePath, jsonFilePath):
      
     # create a dictionary
     data = {}
@@ -39,7 +37,7 @@ def make_json(csvFilePath, jsonFilePath):
         # Convert each row into a dictionary
         # and add it to data
         for rows in csvReader:
-            print("roooows", rows)
+            #print("test roooows", rows)
             # Assuming a column named 'ratiosid' to
             # be the primary key
             key = rows['ratiosid']
@@ -58,33 +56,33 @@ def convertCSVtoJSON():
     csvFilePath = r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodytypemapping.csv'
     jsonFilePath = r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodytypemapping.json'
  
-    # Call the make_json function
-    make_json(csvFilePath, jsonFilePath)
+    # Call the createjson function with filepaths as arguments
+    createjson(csvFilePath, jsonFilePath)
 
+#Function to load MongoDB collection with data from JSON file
 def loadJSONtoMongoDB():
     myclient = pymongo.MongoClient(urlDocker)  
     print(myclient.list_database_names())
     mydb = myclient['ProjectData225']
     collection = mydb['bodytype']
     print(collection)
-
+    
+    #Open JSON file to be loaded to MongoDB
     with open(r"C:/Users/bhati/Documents/DB 225/DBSemProject/bodytypemapping.json") as file:
-        file_data = json.load(file)
+        filedata = json.load(file)
       
-        # Inserting the loaded data in the Collection
-        # if JSON contains data more than one entry
-        # insert_many is used else inser_one is used
-        if isinstance(file_data, list):
-            collection.insert_many(file_data)  
+        # Data loaded from the file is inserted into the collection
+        if isinstance(filedata, list):
+            collection.insert_many(filedata)  # if JSON contains nested data
         else:
-            collection.insert_one(file_data)
+            collection.insert_one(filedata) # if only one item 
             
     myclient.close()
 
 
 def isHourglass(bustlen,waistLen,hiplen,bodytypemeasurements):
-   # print("Inside isHourglass",bustlen,waistLen,hiplen)
-   # print(bodytypemeasurements[0]['bodytype'],bodytypemeasurements[0]['bust-hips_max'],bodytypemeasurements[0]['hips-bust_max'],bodytypemeasurements[0]['bust-waist_min'],bodytypemeasurements[0]['hips-waist'])
+    print("Inside isHourglass",bustlen,waistLen,hiplen)
+    print(bodytypemeasurements[0]['bodytype'],bodytypemeasurements[0]['bust-hips_max'],bodytypemeasurements[0]['hips-bust_max'],bodytypemeasurements[0]['bust-waist_min'],bodytypemeasurements[0]['hips-waist'])
     #(bust – hips) ≤ 1″ AND (hips – bust) < 3.6″ AND (bust – waist) ≥ 9″ OR (hips – waist) ≥ 10″
     if(bodytypemeasurements[0]['bodytype'] == 'hourglass'):
             if ((float(bustlen)-float(hiplen)) <= float(bodytypemeasurements[0]['bust-hips_max'])) and ((float(hiplen)-float(bustlen)) < float(bodytypemeasurements[0]['hips-bust_max']) ) and (((float(bustlen)-float(waistLen)) >= float(bodytypemeasurements[0]['bust-waist_min'])) or ((float(hiplen)-float(waistLen)) >= float(bodytypemeasurements[0]['hips-waist']))):
@@ -147,7 +145,8 @@ def isRound(bustlen,waistLen,hiplen,bodytypemeasurements):
             print("round")
             return True
 
-
+#Funtion to determine the body shape of the customer by 
+#using static measurement data from MongoDB collection.
 def importCustProfileCSV():
     
     client = pymongo.MongoClient("mongodb://localhost:49153/ProjectData225")
@@ -235,7 +234,9 @@ def importCustProfileCSV():
     df.head()
     df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType_mongo.csv',header=['customer_id','gender','age','bust','belly','waist','highhip','bodytype','body_type_id','skin_condition_level'])
     #print(df)    
-    
+
+#This function removes all the unnecessary categories 
+#that we are not considering for our project   
 def cleanArticleTable():
     df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/modifiedArticleType.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
     print(df.shape)
@@ -264,12 +265,13 @@ def cleanArticleTable():
      
     df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv',header=['unnamed','article_id','product_code','product_name','product_type_id','product_type_name','prod_group_name','product_color_id','color_name','detail_desc'])
 
+#Extract colors and their ids from the main modified article file
 def checkColorValues():
-    df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
-    print("abc",df.shape)
+    df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
+    print("DataFrame Rows and columns",df.shape)
     print(df.head)
-    print(df['9'].unique())
-    new_df = df[['8','9']].copy()
+    print(df['color_name'].unique())
+    new_df = df[['product_color_id','color_name']].copy()
     new_df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/colorType.csv',header=['product_color_id','color_name'])
 
 
@@ -310,19 +312,20 @@ def insertProduct(connection , productInfo):
         print("inside product", result[0])
         if(result[0] == 0):
             for index, row in productInfo.iterrows():
-                if row['1'] not in inserted_product_code :
-                    datarow=[row['1'] , row['3'] , row['2'] , row['24']]
+                if row['product_code'] not in inserted_product_code :
+                    datarow=[row['product_code'] , row['product_type_id'] , row['product_name'] , row['detail_desc']]
                     print("Inserting product " , str(datarow))
                     with connection.cursor() as cursor:
-                        cursor.execute('INSERT INTO product(product_code, product_type_id, prod_name, detail_desc)' 'VALUES(%s, %s, %s, %s)', datarow)
-                        connection.commit()
-                    inserted_product_code.append(row['1'])
-                insertProductColor(connection , row['0'] , row['1'] , row['8'])
+                         cursor.execute('INSERT INTO product(product_code, product_type_id, prod_name, detail_desc)' 'VALUES(%s, %s, %s, %s)', datarow)
+                         connection.commit()
+                    inserted_product_code.append(row['product_code'])
+                insertProductColorMap(connection , row['article_id'] , row['product_code'] , row['product_color_id'])
     return 0
 
 
-def insertProductColor(connection , articleid , productId , colorId):
-    checkcountquery = '''select count(*) from product_color_map'''
+def insertProductColorMap(connection , articleid , productId , colorId):
+    
+    checkcountquery = '''select count(*) from product_color_map where article_id = {art_id} '''.format(art_id = articleid)
     with connection.cursor() as cursor:
         cursor.execute(checkcountquery)
         result = cursor.fetchone()
@@ -339,22 +342,22 @@ def insertProductColor(connection , articleid , productId , colorId):
 
 
 def insertProductStyleMap(connection, productInfo , stypeInfo):
-    checkcountquery = '''select count(*) from product_style_map'''
-    with connection.cursor() as cursor:
-        cursor.execute(checkcountquery)
-        result = cursor.fetchone()
-        print('inside product_style_map',result[0])
-        if(result[0] == 0):
-            #print("Inside Product Style    ", stypeInfo[0],stypeInfo[1], productInfo['1'],productInfo.shape)
-            for index, row in productInfo.iterrows():
-                if (stypeInfo[1],row['1']) not in inserted_product_style_map:
-                    datarow=[stypeInfo[1],row['1']]
+    #print("Inside Product Style    ", stypeInfo[0],stypeInfo[1], productInfo['1'],productInfo.shape)
+    for index, row in productInfo.iterrows():
+        checkcountquery = '''select count(*) from product_style_map where product_style_id ={prodid} and product_code ={prodcode}'''.format(prodid=stypeInfo[1],prodcode=row['product_code'])
+        with connection.cursor() as cursor:
+            cursor.execute(checkcountquery)
+            result = cursor.fetchone()
+            #print('inside product_style_map',result[0])
+            if(result[0] == 0):
+                if (stypeInfo[1],row['product_code']) not in inserted_product_style_map:
+                    datarow=[stypeInfo[1],row['product_code']]
                     #print("Inserting product style map" , str(datarow))
                     #print("product_style_id,product_code",stypeInfo[1],row['1'])
                     with connection.cursor() as cursor:
                         cursor.execute('INSERT INTO product_style_map(product_style_id, product_code)' 'VALUES(%s, %s)', datarow)
                         connection.commit()
-                    inserted_product_style_map.append((stypeInfo[1],row['1']))
+                    inserted_product_style_map.append((stypeInfo[1],row['product_code']))
     return 0
 
 
@@ -368,7 +371,7 @@ def findStyles(connection):
     with connection.cursor() as cursor:
         cursor.execute(queryfindStyle)
         result = cursor.fetchall()
-        df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')
+        df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv')
         df_1 = []
         df = df.replace({np.nan: None})
         for c in df.columns:
@@ -379,7 +382,7 @@ def findStyles(connection):
         #print("Finding styles in articles:")
         for row in result:
             style = row[0]
-            df_new = df[df['24'].str.contains(style, regex=True, na=False)]
+            df_new = df[df['detail_desc'].str.contains(style, regex=True, na=False)]
             #print("Searching for Style : " + style)
             if df_new.empty == False :
                 #print(df_new)
@@ -445,22 +448,23 @@ def insertFabric(connection):
 
 
 def insertProductFabricMap(connection, productInfo , fabricInfo):
-    checkcountquery = '''select count(*) from product_fabric_map'''
-    with connection.cursor() as cursor:
-        cursor.execute(checkcountquery)
-        result = cursor.fetchone()
-        print('inside product_fabric_map',result[0])
-        if(result[0] == 0):
-            #print("Inside fabric Style    ", fabricInfo[0],fabricInfo[1], productInfo['1'],productInfo.shape)
-            for index, row in productInfo.iterrows():
-                if (row['1'],fabricInfo[0]) not in inserted_product_fabric_map:
-                    datarow=[row['1'],fabricInfo[0]]
+    
+    #print("Inside fabric Map    ", fabricInfo[0],fabricInfo[1], productInfo['1'],productInfo.shape)
+    for index, row in productInfo.iterrows():
+        if (row['product_code'],fabricInfo[0]) not in inserted_product_fabric_map:
+            checkcountquery = '''select count(*) from product_fabric_map where product_code ={prodcode} and fabric_id ={fabid}'''.format(prodcode=row['product_code'],fabid=fabricInfo[0])
+            with connection.cursor() as cursor:
+                cursor.execute(checkcountquery)
+                result = cursor.fetchone()
+                print('inside product_fabric_map',result[0])
+                if(result[0] == 0):
+                    datarow=[row['product_code'],fabricInfo[0]]
                     print("Inserting product fabric map" , str(datarow))
-                    print("product_code,fabric_id",row['1'],fabricInfo[0])
+                    print("product_code,fabric_id",row['product_code'],fabricInfo[0])
                     with connection.cursor() as cursor:
                         cursor.execute('INSERT INTO product_fabric_map(product_code,fabric_id)' 'VALUES(%s, %s)', datarow)
                         connection.commit()
-                    inserted_product_fabric_map.append((row['1'],fabricInfo[0]))
+                    inserted_product_fabric_map.append((row['product_code'],fabricInfo[0]))
     return 0
 
 def checkProductfabric(connection):
@@ -470,7 +474,7 @@ def checkProductfabric(connection):
     with connection.cursor() as cursor:
         cursor.execute(queryfabric)
         result = cursor.fetchall()
-        df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType.csv')
+        df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv')
         #df_1 = []
         df = df.replace({np.nan: None})
         print("df........",df)
@@ -481,7 +485,7 @@ def checkProductfabric(connection):
         print("Finding fabrics in articles:")
         for row in result:
             fabric = row[1]
-            df_fabric = df[(df['24'].str.contains(fabric, regex=True, na=False)) | (df['2'].str.contains(fabric, regex=True, na=False)) ]
+            df_fabric = df[(df['detail_desc'].str.contains(fabric, regex=True, na=False)) | (df['product_name'].str.contains(fabric, regex=True, na=False)) ]
             print("Searching for fabric : " + fabric)
             print (df_fabric)
             if df_fabric.empty == False :
@@ -511,7 +515,7 @@ def findTheBestFit(connection,product_type,bodytype,skin_condition_level):
     join product_type pt on pt.product_type_id=p.product_type_id
     join body_style_map bsm on bsm.product_style_id=ps.product_style_id join customer c on c.body_type_id=bsm.body_type_id 
     join product_fabric_map pfm on p.product_code=pfm.product_code join fabric f on f.fabric_id=pfm.fabric_id   
-    where pt.type_name like '%{pname}%' and c.bodytype = '{btype}' and c.skin_condition_level = {slevel} and f.level <= {flevel} """.format(pname = product_type , btype=bodytype , slevel=skin_condition_level , flevel=fabric_level)
+    where pt.type_name like '%{pname}%' and c.bodytype = '{btype}' and c.skin_condition_level <= {slevel} and f.level <= {flevel} """.format(pname = product_type , btype=bodytype , slevel=skin_condition_level , flevel=fabric_level)
     df=[]
     with connection.cursor() as cursor:
             cursor.execute(queryFindTheBestStyle)
@@ -573,18 +577,44 @@ try:
     
     connection = getConnection()
     findStyles(connection)
-    #loadCustomerTransactionDump(connection) #don't use this 
     insertCustomer(connection)
     insertFabric(connection)
     checkProductfabric(connection)
-    customer_id = input("Enter your customer id :")
-    product_type = input("Enter the product you are looking for : ")
-    skin_condition_level = input("Enter if you have any skin condition: 1-severe,2-mild,3-noIssues :")
-    custBodyType = getCustomerBodyType(connection,customer_id)
-       
-    #custBodyType = 'rectangle'
-    #product_type = 'Hoodie'
-    #skin_condition_level = 3
+    
+    #Uncomment the below customer_id,product_type,skin_condition_level INPUT lines
+    #to check best fit for customer id, product type,skin level
+    # for customer id some suggestions are given below
+    # OR you may take any id from customer table in database
+    
+    #customer ids for rectangle : 3,6,16,32,44,47,58,67,73,74,78,81,100
+    #customer ids for round: 13,20,34,49,66,82,85,103,126,127,135,136
+    #customer ids for triangle : 38,39,40,131,349,477,557,691,695,712
+    #customer ids  for  hourglass : 42,53
+    #customer ids for invertedtriangle: 127,177,183,241,
+
+    #Some of the product Types you may want to look for are:
+    # Top, Trousers,Skirt,Cardigan,Jacket
+
+    #Skin level condition:
+    #if 1 = severe will give highest quality clothes    
+    #if 2 = mild will fetch medium quality
+    #if 3 = no skin issues will fetch all suitable products
+    
+    # customer_id = input("Enter your customer id :")
+    # product_type = input("Enter the product you are looking for : ")
+    # skin_condition_level = input("Enter if you have any skin condition: 1-severe,2-mild,3-noIssues :")
+    #custBodyType = getCustomerBodyType(connection,customer_id)
+    
+    
+    #OR explicitly give bodytype , product type and skin level condition
+    # to find your perfect match
+    
+    custBodyType = 'round'
+    product_type = 'Skirt'
+    skin_condition_level = 3
+    
+    #The recommended items in the console will come 
+    # but take note that Most of the items of H&M dataset do not have images for them
     findTheBestFit(connection,product_type,custBodyType,skin_condition_level)
     print(f'The above recommendations are for your bodytype = {custBodyType} for {product_type}')
     
