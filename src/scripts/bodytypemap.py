@@ -235,43 +235,60 @@ def importCustProfileCSV():
     df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType_mongo.csv',header=['customer_id','gender','age','bust','belly','waist','highhip','bodytype','body_type_id','skin_condition_level'])
     #print(df)    
 
+#This function extract relevant columns for our project from the main article files
+def extractFromArticleSelected():
+    
+    df = pd.read_csv(r"C:/Users/bhati/Documents/DB 225/DBSemProject/articles.csv") #optional "header"=True
+
+    new_df = df[["article_id","product_code","prod_name","product_type_no","product_type_name","product_group_name","colour_group_code","colour_group_name","detail_desc"]]
+
+    new_df.to_csv("modifiedArticleType.csv")
+
+    
+
+
+
+
 #This function removes all the unnecessary categories 
 #that we are not considering for our project   
+# Taking into consideration only 3 groups for now
+# GarmentUpperBody, Garment Lower body and Garment Full body
 def cleanArticleTable():
     df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/modifiedArticleType.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
     print(df.shape)
     # Get names of indexes for which column product_group_name has value Accessories
-    indexNames = df[ df['5'] == 'Accessories' ].index
+    indexNames = df[ df['product_group_name'] == 'Accessories' ].index
     print(indexNames)
     # Delete these row indexes from dataFrame
-    df.drop(df.loc[df['5']=='Accessories'].index, inplace=True)
-    df.drop(df.loc[df['5'] == 'Underwear'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Socks & Tights'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Items'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Nightwear'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Unknown'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Underwear/nightwear'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Shoes'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Swimwear'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Cosmetic'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Interior textile'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Bags'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Furniture'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Garment and Shoe care'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Fun'].index,inplace=True)
-    df.drop(df.loc[df['5'] == 'Stationery'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name']=='Accessories'].index, inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Underwear'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Socks & Tights'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Items'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Nightwear'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Unknown'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Underwear/nightwear'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Shoes'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Swimwear'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Cosmetic'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Interior textile'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Bags'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Furniture'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Garment and Shoe care'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Fun'].index,inplace=True)
+    df.drop(df.loc[df['product_group_name'] == 'Stationery'].index,inplace=True)
                   
     #df.drop(indexNames , inplace=True)
      
     df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv',header=['unnamed','article_id','product_code','product_name','product_type_id','product_type_name','prod_group_name','product_color_id','color_name','detail_desc'])
 
-#Extract colors and their ids from the main modified article file
+#Extract colors and their ids from the main delExtraGrpsArticleType_header article file
 def checkColorValues():
     df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/delExtraGrpsArticleType_header.csv')#,skiprows=1,header=None,usecols=[0,1,2,3,4,5,8,9,24])
     print("DataFrame Rows and columns",df.shape)
     print(df.head)
     print(df['color_name'].unique())
     new_df = df[['product_color_id','color_name']].copy()
+    new_df = new_df.drop_duplicates(subset='product_color_id', keep="first")
     new_df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/colorType.csv',header=['product_color_id','color_name'])
 
 
@@ -395,6 +412,8 @@ def findStyles(connection):
         #print("xxxxxx: ", df_1)
 
 
+#Never uncomment and use the below function..3BG of unnecessary file load 
+
 #def loadCustomerTransactionDump(connection):
     # df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/transactions_train.csv',skiprows=1,header=None,usecols=[0,1,2,3])
     # #df.to_csv('C:/Users/bhati/Documents/DB 225/DBSemProject/transaction_train_wo_saleschannel.csv')
@@ -417,7 +436,7 @@ def insertCustomer(connection):
         result = cursor.fetchone()
         print('inside customer',result[0])
         if(result[0] == 0):
-            df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType.csv',skiprows=1,header=None)
+            df = pd.read_csv(r'C:/Users/bhati/Documents/DB 225/DBSemProject/bodyMeasureAndType_mongo.csv',skiprows=1,header=None)
             print(df)
             df = df.replace({np.nan: None})
             for row in df.itertuples():
@@ -571,6 +590,7 @@ try:
     convertCSVtoJSON()
     loadJSONtoMongoDB()
     
+    extractFromArticleSelected()
     cleanArticleTable()
     checkColorValues()
     importCustProfileCSV()
@@ -615,7 +635,7 @@ try:
     
     #The recommended items in the console will come 
     # but take note that Most of the items of H&M dataset do not have images for them
-    findTheBestFit(connection,product_type,custBodyType,skin_condition_level)
+    #findTheBestFit(connection,product_type,custBodyType,skin_condition_level)
     print(f'The above recommendations are for your bodytype = {custBodyType} for {product_type}')
     
 
