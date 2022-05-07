@@ -1,0 +1,13 @@
+[mysql]
+db.host=localhost
+db.port=3306
+db.user = Vidushi
+db.password = Welcome1$
+db.current.database=MySQL
+
+[postgresql]
+db.host = Localhost
+db.port = 49153
+db.user = postgres
+db.password = Welcome1
+db.current.database = postgres
