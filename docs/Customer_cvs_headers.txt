@@ -1,1 +1,0 @@
-customer_id,FN,Active,club_member_status,fashion_news_frequency,age,postal_code

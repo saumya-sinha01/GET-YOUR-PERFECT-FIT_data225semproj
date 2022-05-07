@@ -1,0 +1,8 @@
+select distinct pcm.article_id, p.* 
+	from product p join product_style_map psm on p.product_code=psm.product_code 
+    join product_color_map pcm on pcm.product_code = p.product_code
+    join product_style ps on ps.product_style_id=psm.product_style_id 
+    join product_type pt on pt.product_type_id=p.product_type_id
+    join body_style_map bsm on bsm.product_style_id=ps.product_style_id join customer c on c.body_type_id=bsm.body_type_id 
+    #join product_fabric_map pfm on p.product_code=pfm.product_code join fabric f on f.fabric_id=pfm.fabric_id   
+    where pt.type_name = 'Tops' and c.bodytype = 'round' and c.skin_condition_level <= 1 and f.level <= 1;

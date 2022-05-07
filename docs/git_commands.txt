@@ -1,0 +1,25 @@
+Git command - go to your git project folder
+
+1. find status 
+git status
+
+2. add files to local repository
+git add .
+
+3. then commit changes in the local repository
+git commit -m "Comments on the changes done"
+
+4.Push the commited work to the original master
+git push origin master
+
+5. revert the last commit ( if changes are not in sync we need to pull from origin first and (save your local work) then push it again)
+ git reset --soft HEAD~1
+
+6. pull the original 
+git pull
+
+7. git checkout ( so that your local work is overridden by themaster inyour local repository
+git checkout docs/filename
+
+8. git reset --hard
+remove all the local changes and override by the master commit which was earlier there.

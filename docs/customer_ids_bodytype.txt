@@ -1,0 +1,20 @@
+cutomer_ids:
+
+
+hourglass : 42,53 Top
+
+rectangle : 3,6,16,32,44,47,58,67,73,74,78,81,100
+
+round: 13,20,34,49,66,82,85,103,126,127,135,136
+
+triangle : 38,39,40,131,349,477,557,691,695,712
+
+invertedtriangle: 127,177,183,241,
+
+
+
+select * from (select * from transaction_train dbms_random.value) where rownum < 10000;
+
+
+
+

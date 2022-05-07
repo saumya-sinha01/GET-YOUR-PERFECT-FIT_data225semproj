@@ -1,0 +1,17 @@
+Skin_condition_id,condition_name,level
+1,rash,3
+2,red rash,2
+3,Itching,2
+4,Dry,3
+5,cracked,1
+6,scaly,1
+7,Bumps,1
+8,blisters,1
+9,oozing,1
+10,crusting,1
+11,Swelling,1
+12,eczema ,1
+13,dermatitis,1
+14,anaphylaxis,1
+15,psoriasis,1
+16,hot_flashes,2
