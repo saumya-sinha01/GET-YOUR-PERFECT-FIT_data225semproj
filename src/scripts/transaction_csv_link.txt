@@ -1,3 +1,5 @@
 Transaction_train.csv is a very large file to the size of 3.6 GB. This file was not able to upload on GIT HUB.
 This file can be found on our Gdrive from where we have used articles.csv and transactions_train.csv from H&M dataset.
 https://drive.google.com/file/d/1_D6SjyfR3_R8t8EOsdxCorZd1KO0uEmx/view?usp=sharing
+For Images folder also visit
+https://drive.google.com/drive/folders/1reFJ69vXkzXRUu-qSNC2WLtIpHrioDko?usp=sharing
