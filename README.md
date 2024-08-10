@@ -1,30 +1,31 @@
-# GET YOUR PERFECT FIT
-Future of retail depends on giving customers the products which are best suited for them.There has been a
-surge in online shopping since the onset of the pandemic. Leading brands have been witnessing the increase in their
-online sales.People find online shopping more convenient and thus, online stores are keeping very limited stock in their
-stores rather than websites as people can buy several clothes from all the available or newly launched outfits by
-HM.Therefore, providing consumers with such an e-commerce platform that captures the wants of the customers has
-become imperative. This project aims to suggest the customer their best possible outfit according to their body shape.
-Although, filters are available that provide customers outfits based on various parameters such as price, size, colour,
-and type. After evaluating the current HM Dataset, we came up with a plan to construct the architecture in such a way
-that customers can save their time by just providing a few details such as their age, size, body shape, colour
-preferences, skin tone, liking for specific fabrics while creating their accounts itself. Using these parameters users will be
-able to see only those outfits which will be best suited to them. Also, will take into consideration if the customer is
-suffering from any textile related skin condition to suggest clothes made from suitable fabrics.It will also evaluate various
-other factors for gaining useful insights about the products
+# Personalized Outfit Recommendations for E-Commerce
+
+The future of retail depends on offering products tailored to each customer’s preferences. The pandemic has driven a significant increase in online shopping, with brands like H&M seeing a surge in sales and shifting focus to their websites. To adapt, it’s crucial to develop e-commerce platforms that accurately capture customer preferences.
+
+This project aims to recommend outfits to customers based on their body shape. Beyond standard filters like price, size, and color, our approach uses the H&M dataset to build a system where customers input details such as age, size, body shape, color preferences, skin tone, and fabric preferences to receive personalized outfit recommendations.
+
+Using these parameters, the platform will display only those outfits that are best suited to the customer. Additionally, if the customer has any textile-related skin conditions, the system will suggest clothing made from appropriate fabrics. The project also considers other factors to provide useful insights into product selection.
 
 ## Data
-The data for the project is also provided in the git hub repository under the folder src/scripts. However, data which could not be uploaded due to size limit is hosted out of google link shared with all SJSU accounts. 
+
+The data used in this project is available in the GitHub repository under the `src/scripts` folder. Due to size limitations, some datasets are hosted externally and can be accessed via a Google Drive link shared with all SJSU accounts.
 
 ## Code
-The main focus of the scripts if to find out the following 
-1) For a given data of customer (hip, bust, waist and highhip) identify the body shape(rectangle,triangle,round,hourglass,invertedtriangle) 
-2) And added with a given customer's skin condition(1-severe,2-mild,3-noissues),
-3) Find the best suitable outfit for the chosen product type(Top,Trouser,Skirt etc.)
 
-## Documents
-All the related documents, reports and screenshots are provided.
+The primary focus of the scripts is to achieve the following objectives:
 
+- **Body Shape Identification**: For a given set of customer measurements (hip, bust, waist, and high hip), the system identifies the body shape (rectangle, triangle, round, hourglass, inverted triangle).
+- **Outfit Recommendation**: Based on the identified body shape and any skin conditions (1-severe, 2-mild, 3-no issues), the system recommends the best suitable outfit for the selected product type (e.g., top, trouser, skirt).
 
+## Methodology
+
+- **Data Processing**: Performed ETL (Extract, Transform, Load) using AWS Redshift, S3, and Glue to efficiently load, process, and prepare the data for analysis.
+- **Data Analysis**: Utilized Redshift queries and Tableau visualizations to analyze customer demographics, spending patterns, inventory levels, and sales trends.
+
+## Documentation
+
+All related documents, reports, and screenshots are included in the repository. They provide further details on the project’s implementation and results.
+
+---
 
 
